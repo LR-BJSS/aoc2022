@@ -1,83 +1,32 @@
-@total = 0
-@size = 0
-@compartment = 0
-@c1
-@c2
-@priority
-@grandtotal = 0
-Priorities = {
-  'a' => (1), # 1
-  'b' => (2), # 1
-  'c' => (3), # 1
-  'd' => (4), # 1
-  'e' => (5), # 1
-  'f' => (6), # 1
-  'g' => (7), # 1
-  'h' => (8), # 1
-  'i' => (9), # 1
-  'j' => (10), # 1
-  'k' => (11), # 1
-  'l' => (12), # 1
-  'm' => (13), # 1
-  'n' => (14), # 1
-  'o' => (15), # 1
-  'p' => (16), # 1
-  'q' => (17), # 1
-  'r' => (18), # 1
-  's' => (19), # 1
-  't' => (20), # 1
-  'u' => (21), # 1
-  'v' => (22), # 1
-  'w' => (23), # 1
-  'x' => (24), # 1
-  'y' => (25), # 1
-  'z' => (26), # 1
-  'A' => (27), # 1
-  'B' => (28), # 1
-  'C' => (29), # 1
-  'D' => (30), # 1
-  'E' => (31), # 1
-  'F' => (32), # 1
-  'G' => (33), # 1
-  'H' => (34), # 1
-  'I' => (35), # 1
-  'J' => (36), # 1
-  'K' => (37), # 1
-  'L' => (38), # 1
-  'M' => (39), # 1
-  'N' => (40), # 1
-  'O' => (41), # 1
-  'P' => (42), # 1
-  'Q' => (43), # 1
-  'R' => (44), # 1
-  'S' => (45), # 1
-  'T' => (46), # 1
-  'U' => (47), # 1
-  'V' => (48), # 1
-  'W' => (49), # 1
-  'X' => (50), # 1
-  'Y' => (51), # 1
-  'Z' => (52) # 1
-}
-File.foreach("day3-input.txt") do |rucksack|
-  puts rucksack
-  @size = rucksack.size-1
-  @compartment = @size/2
-  @c1 = rucksack[0,@compartment]
-  @c2 = rucksack[@compartment,@size]
-  @total += 1
-  puts "Size: #{@size}"
-  puts "Compartment #{@compartment}"
-  puts "C1 #{@c1}"
-  puts "C2 #{@c2}"
-  @c1.each_char do |c1c|
-    if @c2.include?(c1c) then
-      @priority = Priorities.fetch(c1c)
-      puts "Item: #{c1c}"
-    end
+class Main
+  attr_reader :input
+  SCORE = Hash[[('a'..'z').to_a, ('A'..'Z').to_a].flatten.zip((1..52).to_a)].freeze
+  def initialize(input)
+    @input = input
   end
-  puts "Priority: #{@priority}"
-  @grandtotal += @priority.to_i
+
+  def calculatePt1
+    input.split("\n").map do |rucksack|
+      first_compartment = rucksack.chars.first(rucksack.size/2).join('')
+      last_compartment = rucksack.chars.last(rucksack.size/2).join('')
+      first_compartment.chars.map do |item|
+        SCORE[item] if last_compartment.include?(item)
+      end.compact.uniq
+    end.flatten.sum
+  end
+
+  def calculatePt2
+    input.split("\n").each_slice(3).to_a.map do |group_of_elves|
+      group_of_elves[0].chars.map do |item|
+        if group_of_elves[1].include?(item)
+          SCORE[item] if group_of_elves[2].include?(item)
+        end
+      end.compact.uniq
+    end.flatten.sum
+  end
 end
-puts "Total Rucksacks: " + @total.to_s
-puts "Total Priorities: #{@grandtotal}"
+
+puts "Day 3 Pt 1 Example: #{Main.new(File.open('day3-example.txt').read).calculatePt1}"
+puts "Day 3 Pt 2 Example: #{Main.new(File.open('day3-example.txt').read).calculatePt2}"
+puts "Day 3 Pt 1 Input: #{Main.new(File.open('day3-input.txt').read).calculatePt1}"
+puts "Day 3 Pt 2 Input: #{Main.new(File.open('day3-input.txt').read).calculatePt2}"
