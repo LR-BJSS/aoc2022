@@ -5,8 +5,8 @@ class Main
   end
 
   def calculatePt1
-    input.split("\n\n").map do |elf| # splits input by blank line (i.e each elf)
-      elf.split("\n").sum(&:to_i)    # sums the numbers for each elf
+    input.split("\n\n").map do |elf| # splits input by elf by looking for blank lines
+      elf.split("\n").sum(&:to_i)    # sums the calories for each elf
     end.max # returns the elf with the most calories
   end
 
