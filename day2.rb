@@ -1,6 +1,6 @@
 class Main
     attr_reader :input
-    Scores1 = {
+    ScoresPt1 = {
       'A X' => (1+3), # Rock Rock (Draw)
       'A Y' => (2+6), # Rock Paper (Win)
       'A Z' => (3+0), # Rock Sciscors (Lose)
@@ -11,7 +11,7 @@ class Main
       'C Y' => (2+0), # Scisors Paper (Lose)
       'C Z' => (3+3)  # Scisors Scisors (Draw)
     }
-    Scores2 = {
+    ScoresPt2 = {
       'A X' => (3+0), # Rock Lose (Scissors)
       'A Y' => (1+3), # Rock Draw (Rock)
       'A Z' => (2+6), # Rock Win (Paper)
@@ -29,7 +29,7 @@ class Main
     def calculatePt1
         total = 0
         input.split("\n") do |strategy|
-            total += Scores1.fetch(strategy[0,3])
+            total += ScoresPt1.fetch(strategy[0, 3])
         end
         return total
     end
@@ -37,7 +37,7 @@ class Main
     def calculatePt2
         total = 0
         input.split("\n") do |strategy|
-            total += Scores2.fetch(strategy[0,3])
+            total += ScoresPt2.fetch(strategy[0, 3])
         end
         return total
     end
