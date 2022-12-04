@@ -1,6 +1,8 @@
 class Main
   attr_reader :input
+  # build a clever hash of 52 characters and their scores
   SCORE = Hash[[('a'..'z').to_a, ('A'..'Z').to_a].flatten.zip((1..52).to_a)].freeze
+
   def initialize(input)
     @input = input
   end
@@ -8,9 +10,9 @@ class Main
   def calculatePt1
     input.split("\n").map do |rucksack|
       first_compartment = rucksack.chars.first(rucksack.size/2).join('')
-      last_compartment = rucksack.chars.last(rucksack.size/2).join('')
+      second_compartment = rucksack.chars.last(rucksack.size/2).join('')
       first_compartment.chars.map do |item|
-        SCORE[item] if last_compartment.include?(item)
+        SCORE[item] if second_compartment.include?(item)
       end.compact.uniq
     end.flatten.sum
   end

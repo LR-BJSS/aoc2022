@@ -6,14 +6,14 @@ class Main
 
   def calculatePt1
     input.split("\n\n").map do |elf| # splits input by elf by looking for blank lines
-      elf.split("\n").sum(&:to_i)    # sums the calories for each elf
+      elf.split("\n").sum(&:to_i)    # sums the calories for each elf by splitting each line
     end.max # returns the elf with the most calories
   end
 
   def calculatePt2
     input.split("\n\n").map do |elf|
       elf.split("\n").sum(&:to_i)
-    end.sort.last(3).sum  # returns the sum of the top 3 by sorting by calories
+    end.sort.last(3).sum  # returns the sum of the top 3 by sorting by calories (last part of hash)
   end
 end
 
