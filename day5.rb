@@ -12,8 +12,8 @@ class Main
       .map(&:chars)
       .transpose
       .map { _1.join.strip }
-      .filter { _1.match?(/\d/) }
-      .map { _1[0..-2].chars.reverse }
+      .filter { _1.match?(/\d/) }       # filter out stack number row
+      .map { _1[0..-2].chars.reverse }  #
   end
 
   def parse_raw_commands(raw_commands)
