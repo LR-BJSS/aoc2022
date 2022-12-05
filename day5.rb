@@ -1,29 +1,58 @@
 class Main
   attr_reader :input
-
+  MoveCommand = Struct.new(:amount, :from, :to)
   def initialize(input)
-    @input = input
+    raw_crate_stacks, raw_move_commands = input.split("\n\n")
+    @crate_stacks = parse_raw_crate_stacks(raw_crate_stacks)
+    @move_commands = parse_raw_move_commands(raw_move_commands)
+  end
+  def parse_raw_crate_stacks(raw_crate_stacks)
+    raw_crate_stacks
+      .split("\n")
+      .map(&:chars)
+      .transpose
+      .map { _1.join.strip }
+      .filter { _1.match?(/\d/) }
+      .map { _1[0..-2].chars.reverse }
+  end
+
+  def parse_raw_move_commands(raw_move_commands)
+    raw_move_commands
+      .split("\n")
+      .map { |line|
+        line
+          .match(/move (\d+) from (\d) to (\d)/)
+          .captures
+          .map(&:to_i)
+          .map.with_index { |number, index| index == 0 ? number : number - 1 }
+          .then { MoveCommand.new(_1, _2, _3) }
+      }
+  end
+
+  def run_crane(crate_stacks, move_commands, strategy)
+    stack = crate_stacks.map(&:clone)
+
+    move_commands.each do |move|
+      stack[move.from]
+        .pop(move.amount)
+        .send(strategy)
+        .then { stack[move.to].concat _1 }
+    end
+
+    stack.map(&:last).join
   end
 
   def calculatePt1
-    total = 0
-    input.split("\n") do |item|
-      total += 1
-      end
-    return total
-  end
+    run_crane(@crate_stacks, @move_commands, :reverse)
+    end
 
   def calculatePt2
-    total = 0
-    input.split("\n") do |item|
-      total += 1
+    run_crane(@crate_stacks, @move_commands, :itself)
     end
-    return total
-  end
-  end
+end
 
-puts "Day5 Pt1 Example: #{Main.new(File.open('day5-example.txt').read).calculatePt1}"
-puts "Day5 Pt2 Example: #{Main.new(File.open('day5-example.txt').read).calculatePt2}"
+#puts "Day5 Pt1 Example: #{Main.new(File.open('day5-example.txt').read).calculatePt1}"
+#puts "Day5 Pt2 Example: #{Main.new(File.open('day5-example.txt').read).calculatePt2}"
 puts "Day5 Pt1 Input: #{Main.new(File.open('day5-input.txt').read).calculatePt1}"
 puts "Day5 Pt2 Input: #{Main.new(File.open('day5-input.txt').read).calculatePt2}"
 
