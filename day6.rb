@@ -6,12 +6,12 @@ class Main
   end
 
   def calculate(marker)
-    start_of_message = marker - 1               # we can start at 'marker' - 1 as it isn't possible any earlier
+    start_of_message = marker - 1               # we can start at 'marker'-1 as a valid message cant start earlier
     @input.chars.each_cons(marker) do |message| # iterate for each consecutive message that is 'marker' long
       start_of_message += 1
       break if message.uniq.count == message.count # checks that everything in the message is unique
     end
-    return start_of_message
+    start_of_message
   end
 end
 
