@@ -6,11 +6,21 @@ class Main
   end
 
   def calculatePt1
-    return 1
+    i = 3
+    @input.chars.each_cons(4) do |q|
+      i += 1
+      break if q.uniq.count == q.count
+    end
+    return i
   end
 
   def calculatePt2
-    return 2
+    j = 13
+    @input.chars.each_cons(14) do |q|
+      j += 1
+      break if q.uniq.count == q.count
+    end
+    return j
   end
 end
 
