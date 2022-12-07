@@ -13,7 +13,7 @@ class Main
         stack.pop
       in ['$', 'cd', folder]
         stack.push [stack.last, folder].compact.join(' ')
-      in [size, file] if size.match?(/^\d+$/)
+      in [size, filename] if size.match?(/^\d+$/) # filename is not needed for anything
         stack.each { |i| @directory_sizes[i] += size.to_i }
       else # dir - do nothing
       end
