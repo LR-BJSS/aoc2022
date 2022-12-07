@@ -4,16 +4,16 @@ class Main
     @input = input
   end
 
-  def calculatePart1
+  def calculate_part1
     1
   end
 
-  def calculatePart2
+  def calculate_part2
     2
   end
 end
 
-puts "DayX Pt1 Example: #{Main.new(File.open('dayX-example.txt').read).calculatePart1}"
-puts "DayX Pt2 Example: #{Main.new(File.open('dayX-example.txt').read).calculatePart2}"
-puts "DayX Pt1 Input: #{Main.new(File.open('dayX-input.txt').read).calculatePart1}"
-puts "DayX Pt2 Input: #{Main.new(File.open('dayX-input.txt').read).calculatePart2}"
+puts "DayX Part1 Example: #{Main.new(File.open('dayX-example.txt').read).calculate_part1}"
+puts "DayX Part2 Example: #{Main.new(File.open('dayX-example.txt').read).calculate_part2}"
+puts "DayX Part1 Input: #{Main.new(File.open('dayX-input.txt').read).calculate_part1}"
+puts "DayX Part2 Input: #{Main.new(File.open('dayX-input.txt').read).calculate_part2}"
