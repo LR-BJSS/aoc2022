@@ -30,7 +30,10 @@ class Main
   end
 end
 
-puts "Day7 Part1 Example: #{Main.new('day7-example.txt').calculate_part1(100000)}"
-puts "Day7 Part2 Example: #{Main.new('day7-example.txt').calculate_part2(30000000, 70000000)}"
-puts "Day7 Part1 Input: #{Main.new('day7-input.txt').calculate_part1(100000)}"
-puts "Day7 Part2 Input: #{Main.new('day7-input.txt').calculate_part2(30000000, 70000000)}"
+puts "Directory Size Constraint = #{directory_constraint = 100000}"
+puts "Free Space Required = #{free_space_required = 30000000}"
+puts "Total Disk Space = #{total_disk_space = 70000000}"
+puts "Example Day7 Part1 Answer: #{Main.new('day7-example.txt').calculate_part1(directory_constraint)}"
+puts "Example Day7 Part2 Answer: #{Main.new('day7-example.txt').calculate_part2(free_space_required, total_disk_space)}"
+puts "Input Day7 Part1 Answer: #{Main.new('day7-input.txt').calculate_part1(directory_constraint)}"
+puts "Input Day7 Part2 Answer: #{Main.new('day7-input.txt').calculate_part2(free_space_required, total_disk_space)}"
