@@ -1,3 +1,7 @@
+require "minitest/autorun"
+require "minitest/reporters"
+Minitest::Reporters.use! unless ENV['RM_INFO']
+
 class Main
   attr_reader :input
 
@@ -41,6 +45,16 @@ class Main
       end
     end
     ans
+  end
+end
+
+class Test_AOC22_8 < Minitest::Test
+  def test_solve_part1
+    assert_equal(21, Main.new(File.open('day8-example.txt')).calculate_part1)
+  end
+
+  def test_solve_part2
+    assert_equal(8, Main.new(File.open('day8-example.txt')).calculate_part2)
   end
 end
 
