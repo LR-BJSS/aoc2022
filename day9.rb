@@ -19,11 +19,11 @@ end
 
 class Test_Day_9 < Minitest::Test
   def test_calculate_part1
-    assert_equal(1, Main.new(File.open('day9-example.txt')).calculate_part1)
+    assert_equal(1, Main.new(File.open('day9-example.txt').read).calculate_part1)
   end
 
   def test_calculate_part2
-    assert_equal(2, Main.new(File.open('day9-example.txt')).calculate_part2)
+    assert_equal(2, Main.new(File.open('day9-example.txt').read).calculate_part2)
   end
 end
 

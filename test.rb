@@ -1,8 +1,6 @@
 require 'set'
 
 file = ARGV[0] || 'day9-input.txt'
-#file = 'example1'
-#file = 'example2'
 
 def move_tail(head_pos, tail_pos)
   if head_pos.zip(tail_pos).any? { |h, t| (h - t).abs > 1 }
