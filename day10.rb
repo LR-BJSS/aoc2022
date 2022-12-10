@@ -5,17 +5,16 @@ class Main
   Minitest::Reporters.use! unless ENV['RM_INFO']
 
   def initialize(input)
-    input = input.map(&:chomp)
+    @signal_strength = 0
+    @crt_output = ''
     cycle = 0
     addx = 1
-    @sig_str_sum = 0
-    @row = ''
-    input.each do |ins|
+    input = input.map(&:chomp).each do |ins|
       (1..ins.split.size).each do |i|
-        @row += sprite_vis?(cycle % 40, addx) ? '#' : '.'
+        @crt_output += sprite_vis?(cycle % 40, addx) ? '#' : '.'
         cycle += 1
-        @row += "\n" if div_forty?(cycle)
-        @sig_str_sum += addx * cycle if div_forty?(cycle + 20)
+        @crt_output += "\n" if div_forty?(cycle)
+        @signal_strength += addx * cycle if div_forty?(cycle + 20)
         addx += ins.split.last.to_i if i == 2
       end
     end
@@ -30,11 +29,11 @@ class Main
   end
 
   def calculate_part1
-    @sig_str_sum
+    @signal_strength
   end
 
   def calculate_part2
-    @row
+    @crt_output
   end
 end
 
@@ -52,7 +51,6 @@ class Test_Day_10 < Minitest::Test
 #######.......#######.......#######.....
 ", Main.new(File.open('day10-example.txt').readlines).calculate_part2)
   end
-
 end
 
 puts "Day10 Part1 Example: #{Main.new(File.open('day10-example.txt').readlines).calculate_part1}"
