@@ -11,7 +11,7 @@ class Main
     addx = 1
     input = input.map(&:chomp).each do |ins|
       (1..ins.split.size).each do |i|
-        @crt_output += sprite_vis?(cycle % 40, addx) ? '#' : '.'
+        @crt_output += sprite_vis?(cycle % 40, addx) ? '█' : '-'
         cycle += 1
         @crt_output += "\n" if div_forty?(cycle)
         @signal_strength += addx * cycle if div_forty?(cycle + 20)
@@ -39,17 +39,18 @@ end
 
 class Test_Day_10 < Minitest::Test
   def test_calculate_part1
-    assert_equal(13140, Main.new(File.open('day10-example.txt').readlines).calculate_part1)
+    test_case = 13140
+    assert_equal(test_case, Main.new(File.open('day10-example.txt').readlines).calculate_part1)
   end
 
   def test_calculate_part2
-    assert_equal("##..##..##..##..##..##..##..##..##..##..
-###...###...###...###...###...###...###.
-####....####....####....####....####....
-#####.....#####.....#####.....#####.....
-######......######......######......####
-#######.......#######.......#######.....
-", Main.new(File.open('day10-example.txt').readlines).calculate_part2)
+    test_case = "██--██--██--██--██--██--██--██--██--██--\n"\
+                "███---███---███---███---███---███---███-\n"\
+                "████----████----████----████----████----\n"\
+                "█████-----█████-----█████-----█████-----\n"\
+                "██████------██████------██████------████\n"\
+                "███████-------███████-------███████-----\n"
+    assert_equal(test_case, Main.new(File.open('day10-example.txt').readlines).calculate_part2)
   end
 end
 
