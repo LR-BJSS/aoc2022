@@ -4,36 +4,47 @@ class Main
   require "minitest/reporters"
   Minitest::Reporters.use! unless ENV['RM_INFO']
 
+  RELEVANT_CYCLES = [20, 60, 100, 140, 180, 220].freeze
+  WIDTH = 40
+
   def initialize(input)
-    @signal_strength = 0
-    @crt_output = ''
-    cycle = 0
-    addx = 1
-    input = input.map(&:chomp).each do |ins|
-      (1..ins.split.size).each do |i|
-        @crt_output += sprite_vis?(cycle % 40, addx) ? '█' : '░'
+    @input ||= input.map { |line| line.chomp.split }
+  end
+
+  def execute(action)
+    x, cycle = 1, 0
+    input.each_with_object([]) do |line, output|
+      instruction, argument = line
+      case instruction
+      when "noop"
+        output << action.call(x, cycle)
         cycle += 1
-        @crt_output += "\n" if div_forty?(cycle)
-        @signal_strength += addx * cycle if div_forty?(cycle + 20)
-        addx += ins.split.last.to_i if i == 2
+      when "addx"
+        2.times do
+          output << action.call(x, cycle)
+          cycle += 1
+        end
+        x += argument.to_i
       end
     end
   end
 
-  def div_forty?(num)
-    (num % 40).zero?
-  end
-
-  def sprite_vis?(row_i, addx)
-    (row_i - addx).abs <=1
+  def render_output(output)
+    output.each_slice(WIDTH).map { |row| row.join }.join("\n")
   end
 
   def calculate_part1
-    @signal_strength
+    execute(
+      -> (x, cycle) { RELEVANT_CYCLES.include?(cycle + 1) ? (x * (cycle + 1)) : 0 }
+    ).sum
   end
 
   def calculate_part2
-    @crt_output
+    render_output(
+      execute(
+        -> (x, pos) { [x - 1, x, x + 1].include?(pos % WIDTH) ? "█" : "░" }
+      )
+    )
   end
 end
 
@@ -49,7 +60,7 @@ class Test_Day_10 < Minitest::Test
                 "████░░░░████░░░░████░░░░████░░░░████░░░░\n"\
                 "█████░░░░░█████░░░░░█████░░░░░█████░░░░░\n"\
                 "██████░░░░░░██████░░░░░░██████░░░░░░████\n"\
-                "███████░░░░░░░███████░░░░░░░███████░░░░░\n"
+                "███████░░░░░░░███████░░░░░░░███████░░░░░"
     assert_equal(test_case, Main.new(File.open('./input/day10-example.txt').readlines).calculate_part2)
   end
 end
