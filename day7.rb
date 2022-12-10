@@ -76,7 +76,7 @@ class Main
 
 end
 
-puts "Day7 Pt1 Example: #{Main.new(File.open('day7-example.txt').readlines).calculate_part1(100000)}"
-puts "Day7 Pt2 Example: #{Main.new(File.open('day7-example.txt').readlines).calculate_part2(30000000, 70000000)}"
-puts "Day7 Pt1 Input: #{Main.new(File.open('day7-input.txt').readlines).calculate_part1(100000)}"
-puts "Day7 Pt2 Input: #{Main.new(File.open('day7-input.txt').readlines).calculate_part2(30000000, 70000000)}"
+puts "Day7 Pt1 Example: #{Main.new(File.open('./input/day7-example.txt').readlines).calculate_part1(100000)}"
+puts "Day7 Pt2 Example: #{Main.new(File.open('./input/day7-example.txt').readlines).calculate_part2(30000000, 70000000)}"
+puts "Day7 Pt1 Input: #{Main.new(File.open('./input/day7-input.txt').readlines).calculate_part1(100000)}"
+puts "Day7 Pt2 Input: #{Main.new(File.open('./input/day7-input.txt').readlines).calculate_part2(30000000, 70000000)}"

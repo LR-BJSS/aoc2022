@@ -13,7 +13,7 @@ class Main
   end
 end
 
-puts "DayX Part1 Example: #{Main.new(File.open('dayX-example.txt').read).calculate_part1}"
-puts "DayX Part2 Example: #{Main.new(File.open('dayX-example.txt').read).calculate_part2}"
-puts "DayX Part1 Input: #{Main.new(File.open('dayX-input.txt').read).calculate_part1}"
-puts "DayX Part2 Input: #{Main.new(File.open('dayX-input.txt').read).calculate_part2}"
+puts "DayX Part1 Example: #{Main.new(File.open('./input/dayX-example.txt').read).calculate_part1}"
+puts "DayX Part2 Example: #{Main.new(File.open('./input/dayX-example.txt').read).calculate_part2}"
+puts "DayX Part1 Input: #{Main.new(File.open('./input/dayX-input.txt').read).calculate_part1}"
+puts "DayX Part2 Input: #{Main.new(File.open('./input/dayX-input.txt').read).calculate_part2}"

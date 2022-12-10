@@ -99,20 +99,20 @@ end
 
 class Test_Day_9 < Minitest::Test
   def test_calculate_part1
-    assert_equal(13, Main.new(File.open('day9-example.txt').read).calculate_part1)
+    assert_equal(13, Main.new(File.open('./input/day9-example.txt').read).calculate_part1)
   end
 
   def test_calculate_part2
-    assert_equal(1, Main.new(File.open('day9-example.txt').read).calculate_part2)
+    assert_equal(1, Main.new(File.open('./input/day9-example.txt').read).calculate_part2)
   end
 
   def test_calculate_part2_2
-    assert_equal(36, Main.new(File.open('day9-example-2.txt').read).calculate_part2)
+    assert_equal(36, Main.new(File.open('./input/day9-example-2.txt').read).calculate_part2)
   end
 end
 
-puts "Day9 Part1 Example: #{Main.new(File.open('day9-example.txt').read).calculate_part1}"
-puts "Day9 Part2 Example: #{Main.new(File.open('day9-example.txt').read).calculate_part2}"
-puts "Day9 Part2 Example2: #{Main.new(File.open('day9-example-2.txt').read).calculate_part2}"
-puts "Day9 Part1 Input: #{Main.new(File.open('day9-input.txt').read).calculate_part1}"
-puts "Day9 Part2 Input: #{Main.new(File.open('day9-input.txt').read).calculate_part2}"
+puts "Day9 Part1 Example: #{Main.new(File.open('./input/day9-example.txt').read).calculate_part1}"
+puts "Day9 Part2 Example: #{Main.new(File.open('./input/day9-example.txt').read).calculate_part2}"
+puts "Day9 Part2 Example2: #{Main.new(File.open('./input/day9-example-2.txt').read).calculate_part2}"
+puts "Day9 Part1 Input: #{Main.new(File.open('./input/day9-input.txt').read).calculate_part1}"
+puts "Day9 Part2 Input: #{Main.new(File.open('./input/day9-input.txt').read).calculate_part2}"

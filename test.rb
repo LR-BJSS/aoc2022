@@ -1,7 +1,7 @@
 instr_cycles = { 'addx' => 2, 'noop' => 1 }
 x = [1]
 
-File.readlines('day10-input.txt').each do |l|
+File.readlines('./input/day10-input.txt').each do |l|
   instr, value = l.strip.split
   cycles = instr_cycles[instr]
   1.upto(cycles) do |c|

@@ -40,7 +40,7 @@ end
 class Test_Day_10 < Minitest::Test
   def test_calculate_part1
     test_case = 13140
-    assert_equal(test_case, Main.new(File.open('day10-example.txt').readlines).calculate_part1)
+    assert_equal(test_case, Main.new(File.open('./input/day10-example.txt').readlines).calculate_part1)
   end
 
   def test_calculate_part2
@@ -50,11 +50,11 @@ class Test_Day_10 < Minitest::Test
                 "█████-----█████-----█████-----█████-----\n"\
                 "██████------██████------██████------████\n"\
                 "███████-------███████-------███████-----\n"
-    assert_equal(test_case, Main.new(File.open('day10-example.txt').readlines).calculate_part2)
+    assert_equal(test_case, Main.new(File.open('./input/day10-example.txt').readlines).calculate_part2)
   end
 end
 
-puts "Day10 Part1 Example: #{Main.new(File.open('day10-example.txt').readlines).calculate_part1}"
-puts "Day10 Part2 Example: \n#{Main.new(File.open('day10-example.txt').readlines).calculate_part2}"
-puts "Day10 Part1 Input: #{Main.new(File.open('day10-input.txt').readlines).calculate_part1}"
-puts "Day10 Part2 Input: \n#{Main.new(File.open('day10-input.txt').readlines).calculate_part2}"
+puts "Day10 Part1 Example: #{Main.new(File.open('./input/day10-example.txt').readlines).calculate_part1}"
+puts "Day10 Part2 Example: \n#{Main.new(File.open('./input/day10-example.txt').readlines).calculate_part2}"
+puts "Day10 Part1 Input: #{Main.new(File.open('./input/day10-input.txt').readlines).calculate_part1}"
+puts "Day10 Part2 Input: \n#{Main.new(File.open('./input/day10-input.txt').readlines).calculate_part2}"

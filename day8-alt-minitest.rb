@@ -50,15 +50,15 @@ end
 
 class Test_AOC22_8 < Minitest::Test
   def test_calculate_part1
-    assert_equal(21, Main.new(File.open('day8-example.txt')).calculate_part1)
+    assert_equal(21, Main.new(File.open('./input/day8-example.txt')).calculate_part1)
   end
 
   def test_calculate_part2
-    assert_equal(8, Main.new(File.open('day8-example.txt')).calculate_part2)
+    assert_equal(8, Main.new(File.open('./input/day8-example.txt')).calculate_part2)
   end
 end
 
-puts "Day8 Part1 Example: #{Main.new(File.open('day8-example.txt')).calculate_part1}"
-puts "Day8 Part2 Example: #{Main.new(File.open('day8-example.txt')).calculate_part2}"
-puts "Day8 Part1 Input: #{Main.new(File.open('day8-input.txt')).calculate_part1}"
-puts "Day8 Part2 Input: #{Main.new(File.open('day8-input.txt')).calculate_part2}"
+puts "Day8 Part1 Example: #{Main.new(File.open('./input/day8-example.txt')).calculate_part1}"
+puts "Day8 Part2 Example: #{Main.new(File.open('./input/day8-example.txt')).calculate_part2}"
+puts "Day8 Part1 Input: #{Main.new(File.open('./input/day8-input.txt')).calculate_part1}"
+puts "Day8 Part2 Input: #{Main.new(File.open('./input/day8-input.txt')).calculate_part2}"

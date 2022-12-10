@@ -17,7 +17,7 @@ class Main
   end
 end
 
-puts "Day1 Pt1 Example: #{Main.new(File.open('day1-example.txt').read).calculatePt1}"
-puts "Day1 Pt2 Example: #{Main.new(File.open('day1-example.txt').read).calculatePt2}"
-puts "Day1 Pt1 Input: #{Main.new(File.open('day1-input.txt').read).calculatePt1}"
-puts "Day1 Pt2 Input: #{Main.new(File.open('day1-input.txt').read).calculatePt2}"
+puts "Day1 Pt1 Example: #{Main.new(File.open('./input/day1-example.txt').read).calculatePt1}"
+puts "Day1 Pt2 Example: #{Main.new(File.open('./input/day1-example.txt').read).calculatePt2}"
+puts "Day1 Pt1 Input: #{Main.new(File.open('./input/day1-input.txt').read).calculatePt1}"
+puts "Day1 Pt2 Input: #{Main.new(File.open('./input/day1-input.txt').read).calculatePt2}"

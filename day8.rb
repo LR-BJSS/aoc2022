@@ -23,7 +23,7 @@ class Main
   end
 end
 
-puts "Day8 Part1 Example: #{Main.new('day8-example.txt').calculate_part1}"
-puts "Day8 Part2 Example: #{Main.new('day8-example.txt').calculate_part2}"
-puts "Day8 Part1 Input: #{Main.new('day8-input.txt').calculate_part1}"
-puts "Day8 Part2 Input: #{Main.new('day8-input.txt').calculate_part2}"
+puts "Day8 Part1 Example: #{Main.new('./input/day8-example.txt').calculate_part1}"
+puts "Day8 Part2 Example: #{Main.new('./input/day8-example.txt').calculate_part2}"
+puts "Day8 Part1 Input: #{Main.new('./input/day8-input.txt').calculate_part1}"
+puts "Day8 Part2 Input: #{Main.new('./input/day8-input.txt').calculate_part2}"
