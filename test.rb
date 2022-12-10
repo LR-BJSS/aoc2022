@@ -1,59 +1,20 @@
-require 'set'
+instr_cycles = { 'addx' => 2, 'noop' => 1 }
+x = [1]
 
-file = ARGV[0] || 'day9-input.txt'
-
-def move_tail(head_pos, tail_pos)
-  if head_pos.zip(tail_pos).any? { |h, t| (h - t).abs > 1 }
-    # Move tail
-    if head_pos.zip(tail_pos).any? { |h, t| h == t }
-      # ...straight
-      tail_pos = tail_pos.zip(head_pos).map { |t, h| h + (t <=> h) }
-    else
-      # ...diagonally
-      possible = []
-      positions = [[-1, -1], [-1, 1], [1, 1], [1, -1]].map do |delta|
-        pos = tail_pos.zip(delta).map { |t, d| t + d }
-        possible << pos if head_pos.zip(pos).all? { |h, p| (h - p).abs <= 1}
-      end
-      if possible.length > 1
-        raise "Multiple possible diagonal moves"
-      end
-      tail_pos = possible.first
-    end
-  end
-  return tail_pos
-end
-
-DIRS = {
-  'L' => [-1, 0],
-  'R' => [1, 0],
-  'U' => [0, -1],
-  'D' => [0, 1],
-}
-
-head_pos = [0, 0]
-tail_pos = [[0, 0]] * 9 # Since we overwrite, duplication is not an issue
-@visited1 = Set[tail_pos.first] # Part 1
-@visited2 = Set[tail_pos.last] # Part 2
-File.read(file).rstrip.split("\n").each do |line|
-  case line
-  when /\A([LRUD]) (\d+)\z/
-    delta = DIRS[Regexp.last_match(1)]
-    dist = Regexp.last_match(2).to_i
-    dist.times do
-      head_pos = head_pos.zip(delta).map { |p, dp| p + dp }
-      last_head = head_pos
-      tail_pos = tail_pos.map { |tp| last_head = move_tail(last_head, tp) }
-      @visited1 << tail_pos.first # Part 1
-      @visited2 << tail_pos.last # Part 2
-    end
-  else
-    raise "Malformed line: '#{line}'"
+File.readlines('day10-input.txt').each do |l|
+  instr, value = l.strip.split
+  cycles = instr_cycles[instr]
+  1.upto(cycles) do |c|
+    x << (c == cycles ? x.last + value.to_i : x.last)
   end
 end
 
-# Part 1
-puts "First tail visited #{@visited1.length} positions"
+signals = [20, 60, 100, 140, 180, 220].map { |i| x[i - 1] * i }
+p "Part 1: #{signals.sum}"
 
-# Part 2
-puts "Last tail visited #{@visited2.length} positions"
+p "Part 2:"
+x.each_with_index do |s, i|
+  position = i % 40
+  print ((s - 1..s + 1).to_a.include?(position) ? '@' : ' ')
+  print "\n" if position == 39
+end
