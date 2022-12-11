@@ -33,7 +33,7 @@ class Main
     @monkeys.each do |monkey|
       monkey[:inspections] += monkey[:items].length
       monkey[:items].each do |initial_level|
-        worry_level = initial_level.send(*monkey[:operation]) / relief_factor % common_divisor
+        worry_level = (initial_level.send(*monkey[:operation]) / relief_factor) % common_divisor
         throw_to = (worry_level % monkey[:test]) == 0 ? monkey[:if_true] : monkey[:if_false]
         @monkeys[throw_to][:items].push(worry_level)
       end
