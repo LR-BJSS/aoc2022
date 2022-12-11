@@ -9,17 +9,18 @@ class Main
   end
 
   def parse(input)
+    # builds a stripped down hash for each monkey
     @monkeys = input.strip.split("\n\n").map do |monkey_map|
       business = monkey_map.split("\n")
       {
-        items: business[1].scan(/\d+/).map(&:to_i),
+        items: business[1].scan(/\d+/).map(&:to_i), # extracts all the numbers to an array of integers
         operation: business[2].then do |op|
-          next [:pow, 2] if op.scan(/old [*] old/).first
-          [business[2].scan(/[+*]/).first.to_sym, business[2].scan(/\d+$/).map(&:to_i).first]
+          next [:pow, 2] if op.scan(/old [*] old/).first # handle the specific "squared" case
+          [business[2].scan(/[+*]/).first.to_sym, business[2].scan(/\d+$/).map(&:to_i).first] # handle +n and *n cases
         end,
-        test: business[3].scan(/\d+$/).first.to_i,
-        if_true: business[4].scan(/\d+$/).first.to_i,
-        if_false: business[5].scan(/\d+$/).first.to_i,
+        test: business[3].scan(/\d+$/).first.to_i, # number at the end of the line
+        if_true: business[4].scan(/\d+$/).first.to_i, # number at the end of the line
+        if_false: business[5].scan(/\d+$/).first.to_i, # number at the end of the line
         inspections: 0
       }
     end
@@ -58,23 +59,23 @@ end
 class Test_Day_11 < Minitest::Test
   def test_calculate_part1_example
     test_case = 10605
-    assert_equal(test_case, Main.new(File.open('./input/day11-example.txt').read).calculate_part1(3))
+    assert_equal(test_case, Main.new(File.open('./input/day11-example.txt').read).calculate_part1(RELIEF_PART_ONE))
   end
 
   def test_calculate_part2_example
     test_case = 2713310158
-    assert_equal(test_case, Main.new(File.open('./input/day11-example.txt').read).calculate_part2(1))
+    assert_equal(test_case, Main.new(File.open('./input/day11-example.txt').read).calculate_part2(RELIEF_PART_TWO))
   end
 
-  # input cases added once correct answers are verified by submission to aoc
+  # input cases are added to aid refactoring once correct answers are verified by submission to aoc
   def test_calculate_part_input
     test_case = 99840
-    assert_equal(test_case, Main.new(File.open('./input/day11-input.txt').read).calculate_part1(3))
+    assert_equal(test_case, Main.new(File.open('./input/day11-input.txt').read).calculate_part1(RELIEF_PART_ONE))
   end
 
   def test_calculate_part2_input
     test_case = 20683044837
-    assert_equal(test_case, Main.new(File.open('./input/day11-input.txt').read).calculate_part2(1))
+    assert_equal(test_case, Main.new(File.open('./input/day11-input.txt').read).calculate_part2(RELIEF_PART_TWO))
   end
 end
 
