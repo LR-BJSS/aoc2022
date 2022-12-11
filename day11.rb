@@ -23,61 +23,64 @@ class Main
         inspections: 0
       }
     end
+  end
 
-    def monkey_business(relief_factor)
-      # common_divisor = @monkeys.map { |m| m[:test] }.inject(&:*) # simple product of divisors (since all primes)
-      common_divisor = @monkeys.map { |m| m[:test] }.reduce(1, :lcm) # using lowest common mulitplier function
-      @monkeys.each do |monkey|
-        monkey[:inspections] += monkey[:items].length
-        monkey[:items].each do |initial_level|
-          worry_level = initial_level.send(*monkey[:operation]) / relief_factor % common_divisor
-          throw_to = (worry_level % monkey[:test]) == 0 ? monkey[:if_true] : monkey[:if_false]
-          @monkeys[throw_to][:items].push(worry_level)
-        end
-        monkey[:items] = []
+  def monkey_business(relief_factor)
+    # both these approaches work, but product of divisors may be higher if source data isn't all primes
+    # common_divisor = @monkeys.map { |m| m[:test] }.inject(&:*) # product of divisors
+    common_divisor = @monkeys.map { |m| m[:test] }.reduce(1, :lcm) # lowest common mulitplier
+    @monkeys.each do |monkey|
+      monkey[:inspections] += monkey[:items].length
+      monkey[:items].each do |initial_level|
+        worry_level = initial_level.send(*monkey[:operation]) / relief_factor % common_divisor
+        throw_to = (worry_level % monkey[:test]) == 0 ? monkey[:if_true] : monkey[:if_false]
+        @monkeys[throw_to][:items].push(worry_level)
       end
-    end
-
-    def calculate_part1(relief_factor)
-      20.times do
-        monkey_business(relief_factor)
-      end
-      @monkeys.map { |m| m[:inspections] }.sort.reverse.take(2).inject(&:*)
-    end
-
-    def calculate_part2(relief_factor)
-      10000.times do
-        monkey_business(relief_factor)
-      end
-      @monkeys.map { |m| m[:inspections] }.sort.reverse.take(2).inject(&:*)
+      monkey[:items] = []
     end
   end
 
-  class Test_Day_11 < Minitest::Test
-    def test_calculate_part1_example
-      test_case = 10605
-      assert_equal(test_case, Main.new(File.open('./input/day11-example.txt').read).calculate_part1(3))
+  def calculate_part1(relief_factor)
+    20.times do
+      monkey_business(relief_factor)
     end
+    @monkeys.map { |m| m[:inspections] }.sort.reverse.take(2).inject(&:*)
+  end
 
-    def test_calculate_part2_example
-      test_case = 2713310158
-      assert_equal(test_case, Main.new(File.open('./input/day11-example.txt').read).calculate_part2(1))
+  def calculate_part2(relief_factor)
+    10000.times do
+      monkey_business(relief_factor)
     end
-
-    # input cases added once correct answers are verified by submission to aoc
-    def test_calculate_part_input
-      test_case = 99840
-      assert_equal(test_case, Main.new(File.open('./input/day11-input.txt').read).calculate_part1(3))
-    end
-
-    def test_calculate_part2_input
-      test_case = 20683044837
-      assert_equal(test_case, Main.new(File.open('./input/day11-input.txt').read).calculate_part2(1))
-    end
+    @monkeys.map { |m| m[:inspections] }.sort.reverse.take(2).inject(&:*)
   end
 end
 
-puts "Day11 Part1 Example: #{Main.new(File.open('./input/day11-example.txt').read).calculate_part1(3)}"
-puts "Day11 Part2 Example: #{Main.new(File.open('./input/day11-example.txt').read).calculate_part2(1)}"
-puts "Day11 Part1 Input: #{Main.new(File.open('./input/day11-input.txt').read).calculate_part1(3)}"
-puts "Day11 Part2 Input: #{Main.new(File.open('./input/day11-input.txt').read).calculate_part2(1)}"
+class Test_Day_11 < Minitest::Test
+  def test_calculate_part1_example
+    test_case = 10605
+    assert_equal(test_case, Main.new(File.open('./input/day11-example.txt').read).calculate_part1(3))
+  end
+
+  def test_calculate_part2_example
+    test_case = 2713310158
+    assert_equal(test_case, Main.new(File.open('./input/day11-example.txt').read).calculate_part2(1))
+  end
+
+  # input cases added once correct answers are verified by submission to aoc
+  def test_calculate_part_input
+    test_case = 99840
+    assert_equal(test_case, Main.new(File.open('./input/day11-input.txt').read).calculate_part1(3))
+  end
+
+  def test_calculate_part2_input
+    test_case = 20683044837
+    assert_equal(test_case, Main.new(File.open('./input/day11-input.txt').read).calculate_part2(1))
+  end
+end
+
+RELIEF_PART_ONE = 3 # Part 1 specified a relief factor of 3.
+RELIEF_PART_TWO = 1 # Part 2 specified no replief factor, so 1.
+puts "Day11 Part1 Example: #{Main.new(File.open('./input/day11-example.txt').read).calculate_part1(RELIEF_PART_ONE)}"
+puts "Day11 Part2 Example: #{Main.new(File.open('./input/day11-example.txt').read).calculate_part2(RELIEF_PART_TWO)}"
+puts "Day11 Part1 Input: #{Main.new(File.open('./input/day11-input.txt').read).calculate_part1(RELIEF_PART_ONE)}"
+puts "Day11 Part2 Input: #{Main.new(File.open('./input/day11-input.txt').read).calculate_part2(RELIEF_PART_TWO)}"
