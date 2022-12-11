@@ -12,50 +12,42 @@ class Main
     @monkeys = input.strip.split("\n\n").map do |monkey_business|
       lines = monkey_business.split("\n")
       {
-        id: lines[0].sub('Monkey ', '').sub(':', '').to_i,
-        items: lines[1].sub('  Starting items: ', '').split(', ').map(&:to_i),
-        operation: lines[2].sub('  Operation: new = old ', '').then do |op|
-          next [:pow, 2] if op == '* old'
-          (cmd, val) = op.split(' ')
-          [cmd.to_sym, val.to_i]
+        items: lines[1].scan(/\d+/).map(&:to_i),
+        operation: lines[2].then do |op|
+          next [:pow, 2] if op.scan(/old \W old/).first
+          [lines[2].scan(/[+*]/).first.to_sym, lines[2].scan(/\d+$/).map(&:to_i).first]
         end,
-        test_divisor: lines[3].sub('  Test: divisible by ', '').strip.to_i,
-        if_true: lines[4].sub('    If true: throw to monkey ', '').to_i,
-        if_false: lines[5].sub('    If false: throw to monkey ', '').to_i,
+        test: lines[3].scan(/\d+$/).first.to_i,
+        if_true: lines[4].scan(/\d+$/).first.to_i,
+        if_false: lines[5].scan(/\d+$/).first.to_i,
         inspections: 0
       }
     end
 
-    def calculate_part1
-      20.times do
-        @monkeys.each do |monkey|
-          monkey[:inspections] += monkey[:items].length
-          monkey[:items].each do |initial_level|
-            worry_level = initial_level.send(*monkey[:operation]) / 3
-            throw_to = (worry_level % monkey[:test_divisor]) == 0 ? monkey[:if_true] : monkey[:if_false]
-            @monkeys[throw_to][:items].push(worry_level)
-          end
-          monkey[:items] = []
+    def monkey_business(relief_factor, divisor)
+      @monkeys.each do |monkey|
+        monkey[:inspections] += monkey[:items].length
+        monkey[:items].each do |initial_level|
+          worry_level = initial_level.send(*monkey[:operation]) / relief_factor % divisor
+          throw_to = (worry_level % monkey[:test]) == 0 ? monkey[:if_true] : monkey[:if_false]
+          @monkeys[throw_to][:items].push(worry_level)
         end
+        monkey[:items] = []
+      end
+    end
+
+    def calculate_part1
+      common_divisor = @monkeys.map { |m| m[:test] }.inject(&:*) # simple product of divisors (all primes)
+      20.times do
+        monkey_business(3, common_divisor)
       end
       @monkeys.map { |m| m[:inspections] }.sort.reverse.take(2).inject(&:*)
     end
 
     def calculate_part2
-      # two different options to manage worry levels are provided here - either
-      # common_divisor = @monkeys.map { |m| m[:test_divisor] }.inject(&:*)
-      # or
-      common_multiplier =  @monkeys.map { |m| m[:test_divisor] }.reduce(1, :lcm)
+      common_divisor = @monkeys.map { |m| m[:test] }.reduce(1, :lcm) # lowest common mulitplier function
       10000.times do
-        @monkeys.each do |monkey|
-          monkey[:inspections] += monkey[:items].length
-          monkey[:items].each do |initial_level|
-            worry_level = initial_level.send(*monkey[:operation]) % common_multiplier
-            throw_to = (worry_level % monkey[:test_divisor]) == 0 ? monkey[:if_true] : monkey[:if_false]
-            @monkeys[throw_to][:items].push(worry_level)
-          end
-          monkey[:items] = []
-        end
+        monkey_business(1, common_divisor)
       end
       @monkeys.map { |m| m[:inspections] }.sort.reverse.take(2).inject(&:*)
     end
