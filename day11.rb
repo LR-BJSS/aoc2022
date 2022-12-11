@@ -31,9 +31,9 @@ class Main
         @monkeys.each do |monkey|
           monkey[:inspections] += monkey[:items].length
           monkey[:items].each do |initial_level|
-            level = initial_level.send(*monkey[:operation]) / 3
-            throw_to = (level % monkey[:test_divisor]) == 0 ? monkey[:if_true] : monkey[:if_false]
-            @monkeys[throw_to][:items].push(level)
+            worry_level = initial_level.send(*monkey[:operation]) / 3
+            throw_to = (worry_level % monkey[:test_divisor]) == 0 ? monkey[:if_true] : monkey[:if_false]
+            @monkeys[throw_to][:items].push(worry_level)
           end
           monkey[:items] = []
         end
@@ -42,14 +42,17 @@ class Main
     end
 
     def calculate_part2
-      common_divisor = @monkeys.map { |m| m[:test_divisor] }.inject(&:*)
+      # two different options to manage worry levels are provided here - either
+      # common_divisor = @monkeys.map { |m| m[:test_divisor] }.inject(&:*)
+      # or
+      common_multiplier =  @monkeys.map { |m| m[:test_divisor] }.reduce(1, :lcm)
       10000.times do
         @monkeys.each do |monkey|
           monkey[:inspections] += monkey[:items].length
           monkey[:items].each do |initial_level|
-            level = initial_level.send(*monkey[:operation]) % common_divisor
-            throw_to = (level % monkey[:test_divisor]) == 0 ? monkey[:if_true] : monkey[:if_false]
-            @monkeys[throw_to][:items].push(level)
+            worry_level = initial_level.send(*monkey[:operation]) % common_multiplier
+            throw_to = (worry_level % monkey[:test_divisor]) == 0 ? monkey[:if_true] : monkey[:if_false]
+            @monkeys[throw_to][:items].push(worry_level)
           end
           monkey[:items] = []
         end
