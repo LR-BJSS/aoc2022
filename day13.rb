@@ -10,7 +10,10 @@ class Main
       x, y = pair.split("\n").map { eval(_1) }
       ordered(x, y) * (index + 1)
     end
-    @sorted_pairs = @input.map { _1.split("\n").map { |l| eval(l) } }.reduce(&:+).concat([[[2]], [[6]]]).sort { |a, b| ordered(b, a) * 2 - 1 }
+    @sorted_pairs = @input.map { _1.split("\n").map\
+      { |l| eval(l) } }.reduce(&:+)\
+      .concat([[[2]],[[6]]]).sort\
+      { |a, b| ordered(b, a) * 2 - 1 }
   end
 
   def ordered(a, b)
