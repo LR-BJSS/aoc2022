@@ -68,6 +68,7 @@ class Main
   end
 end
 
+
 class Test_Day_10 < Minitest::Test
   def test_calculate_part1
     test_case = 31
