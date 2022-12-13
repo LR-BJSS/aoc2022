@@ -42,17 +42,14 @@ class Test_Day_10 < Minitest::Test
     test_case = 13
     assert_equal(test_case, Main.new(File.open('./input/day13-example.txt').read).calculate_part1)
   end
-
   def test_calculate_part2
     test_case = 140
     assert_equal(test_case, Main.new(File.open('./input/day13-example.txt').read).calculate_part2)
   end
-
   def test_calculate_part3
     test_case = 5390
     assert_equal(test_case, Main.new(File.open('./input/day13-input.txt').read).calculate_part1)
   end
-
   def test_calculate_part4
     test_case = 19261
     assert_equal(test_case, Main.new(File.open('./input/day13-input.txt').read).calculate_part2)
