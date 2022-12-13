@@ -25,20 +25,24 @@ class Main
   end
 
   def calculate_part1
+    # x and y index of the start point
     y = input.find_index { |i| i.include? 'S' }
     x = input[y].index('S')
     grid = input.map do |i|
       i.chars.map { |j| { char: j, h: j.tr('SE', 'az').ord, seen: false } }
     end
+    # polarity of 1 means forward from start to finish
     find_next_steps(grid, [[x, y]], 'E', 1)
   end
 
   def calculate_part2
+    # x and index of the end point
     y = input.find_index { |i| i.include? 'E' }
     x = input[y].index('E')
     grid = input.map do |i|
       i.chars.map { |j| { char: j, h: j.tr('SE', 'az').ord, seen: false } }
     end
+    # polarity of -1 means backwards from finish to start, and here start is 'every a'
     find_next_steps(grid, [[x, y]], 'a', -1)
   end
 end
@@ -48,17 +52,14 @@ class Test_Day_10 < Minitest::Test
     test_case = 31
     assert_equal(test_case, Main.new(File.open('./input/day12-example.txt').readlines(chomp: true)).calculate_part1)
   end
-
   def test_calculate_part2
     test_case = 29
     assert_equal(test_case, Main.new(File.open('./input/day12-example.txt').readlines(chomp: true)).calculate_part2)
   end
-
   def test_calculate_part3
     test_case = 504
     assert_equal(test_case, Main.new(File.open('./input/day12-input.txt').readlines(chomp: true)).calculate_part1)
   end
-
   def test_calculate_part4
     test_case = 500
     assert_equal(test_case, Main.new(File.open('./input/day12-input.txt').readlines(chomp: true)).calculate_part2)
