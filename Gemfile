@@ -8,3 +8,8 @@ gem "json"
 gem "minitest"
 gem "minitest-reporters"
 gem "ruby2d"
+
+gem 'activesupport'
+gem 'byebug'
+gem 'rspec'
+gem 'solargraph'
