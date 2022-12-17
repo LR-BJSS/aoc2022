@@ -1,5 +1,4 @@
 class Main
-  attr_reader :input
   require "minitest/autorun"
   require "minitest/reporters"
   Minitest::Reporters.use! unless ENV['RM_INFO']
@@ -7,18 +6,12 @@ class Main
   LEFT_OFFSET = 2
   BOTTOM_OFFSET = 3
   CHAMBER_WIDTH = 7
-  ROCKS = [["####",], [" # ", "###", " # ",], ["  #", "  #", "###",], ["#", "#", "#", "#",], ["##", "##",],]
-  TRUNCATE_CHAMBER = 1000
+  TRUNCATE_CHAMBER = 3000
+  ROCKS = [["####",], [" # ", "###", " # ",], ["  #", "  #", "###",], ["#", "#", "#", "#",], ["##", "##",]]
 
   def initialize(input)
-    @input = input
     @jets = input.first.chars
-    @jet_idx = 0
-    @rock_idx = 0
-    @shifts = 0
-    @omg = 0
-    @part1 = 0
-    @part2 = 0
+    @jet_idx, @rock_idx, @shifts, @tower, @part1, @part2 = 0, 0, 0, 0, 0, 0
     @chamber = []
   end
 
@@ -37,12 +30,12 @@ class Main
     # this config was seen when rock_idx was `rock_idx_was` and chamber_height was `chamber_height_was`
     # it has been seen again now with rock_idx = `@rock_idx` and chamber_height = `chamber_height`
     loops, extra = (1_000_000_000_000 - @rock_idx).divmod(@rock_idx - rock_idx_was)
-    @omg = loops * (chamber_height - chamber_height_was)
+    @tower = loops * (chamber_height - chamber_height_was)
     # we have to do `loops` complete loops with extra `extra` rocks, adding `omg` height
     extra.times do
       simulation_step
     end
-    @part2 = @shifts + @chamber.length + @omg
+    @part2 = @shifts + @chamber.length + @tower
   end
 
   def calculate_part1
@@ -114,29 +107,30 @@ class Main
     true
   end
 end
-  class Test_Day_10 < Minitest::Test
-    def test_calculate_part1
-      test_case = 0
-      assert_equal(test_case, Main.new(File.open('./input/day17-example.txt').readlines(chomp: true)).calculate_part1)
-    end
 
-    def test_calculate_part2
-      test_case = 1514285714288
-      assert_equal(test_case, Main.new(File.open('./input/day17-example.txt').readlines(chomp: true)).calculate_part2)
-    end
-
-    def test_calculate_part3
-      test_case = 3141
-      assert_equal(test_case, Main.new(File.open('./input/day17-input.txt').readlines(chomp: true)).calculate_part1)
-    end
-
-    def test_calculate_part4
-      test_case = 1561739130391
-      assert_equal(test_case, Main.new(File.open('./input/day17-input.txt').readlines(chomp: true)).calculate_part2)
-    end
+class Test_Day_10 < Minitest::Test
+  def test_calculate_part1
+    test_case = 3068
+    assert_equal(test_case, Main.new(File.open('./input/day17-example.txt').readlines(chomp: true)).calculate_part1)
   end
 
-  puts "Day17 Part1 Example: #{Main.new(File.open('./input/day17-example.txt').readlines(chomp: true)).calculate_part1}"
-  puts "Day17 Part2 Example: #{Main.new(File.open('./input/day17-example.txt').readlines(chomp: true)).calculate_part2}"
-  puts "Day17 Part1 Input: #{Main.new(File.open('./input/day17-input.txt').readlines(chomp: true)).calculate_part1}"
-  puts "Day17 Part2 Input: #{Main.new(File.open('./input/day17-input.txt').readlines(chomp: true)).calculate_part2}"
+  def test_calculate_part2
+    test_case = 1514285714288
+    assert_equal(test_case, Main.new(File.open('./input/day17-example.txt').readlines(chomp: true)).calculate_part2)
+  end
+
+  def test_calculate_part3
+    test_case = 3141
+    assert_equal(test_case, Main.new(File.open('./input/day17-input.txt').readlines(chomp: true)).calculate_part1)
+  end
+
+  def test_calculate_part4
+    test_case = 1561739130391
+    assert_equal(test_case, Main.new(File.open('./input/day17-input.txt').readlines(chomp: true)).calculate_part2)
+  end
+end
+
+puts "Day17 Part1 Example: #{Main.new(File.open('./input/day17-example.txt').readlines(chomp: true)).calculate_part1}"
+puts "Day17 Part2 Example: #{Main.new(File.open('./input/day17-example.txt').readlines(chomp: true)).calculate_part2}"
+puts "Day17 Part1 Input: #{Main.new(File.open('./input/day17-input.txt').readlines(chomp: true)).calculate_part1}"
+puts "Day17 Part2 Input: #{Main.new(File.open('./input/day17-input.txt').readlines(chomp: true)).calculate_part2}"
