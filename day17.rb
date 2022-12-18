@@ -7,7 +7,19 @@ class Main
   BOTTOM_OFFSET = 3
   CHAMBER_WIDTH = 7
   TRUNCATE_CHAMBER = 3000
-  ROCKS = [["####",], [" # ", "###", " # ",], ["  #", "  #", "###",], ["#", "#", "#", "#",], ["##", "##",]]
+  ROCKS = [["####"], [" # ", "###", " # "], ["  #", "  #", "###"], ["#", "#", "#", "#"], ["##", "##"]]
+  @shapes = Array.new
+  lines = File.open('./input/day17-shapes.txt').readlines
+  shape = Array.new
+  lines.each do |line|
+    if line == '/n'
+      @shapes.push(shape)
+    else
+      line.chomp
+      shape.push(line)
+    end
+  end
+  puts @shapes.to_s
 
   def initialize(input)
     @jets = input.first.chars
