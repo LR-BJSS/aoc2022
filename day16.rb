@@ -32,7 +32,6 @@ class Main
 
   def calculate_part1
     solve(@valves, ["AA","AA"], 30, 0)
-    
   end
 
   def calculate_part2

@@ -1,5 +1,5 @@
 class Main
-  attr_reader :input
+  attr_reader :input, :blueprints
   require "set"
   require "minitest/autorun"
   require "minitest/reporters"
@@ -15,6 +15,7 @@ class Main
 
   def initialize(input)
     @input = input
+    @blueprints = input.map { |line| Blueprint.new(*line.scan(/(\d+)/).flatten.map(&:to_i)) }
   end
 
   def getBestGeodes(bp, minutes)
@@ -27,12 +28,8 @@ class Main
         visited << curr
         if (curr.minutes == 0)
           if (best < curr.geode)
-            # puts "found new best #{bp.id}: #{curr.geode}"
-            best = curr.geode
+            best = curr.geode # New best Blueprint found
           end
-          # abandon thread if there is no way we could beat the current best
-          # elsif(curr.geode + ((1..curr.minutes).to_a.sum) > best)
-          # elsif(curr.minutes > 20 || curr.geode + ((1...curr.minutes).to_a.sum) > best)
         else
           n = BotState.new(
             curr.minutes - 1,
@@ -45,7 +42,6 @@ class Main
             curr.obs + curr.obsBotCnt,
             curr.geode + curr.geodeBotCnt
           )
-
           # always build geode bot if you can
           canBuildGeodeBot = (curr.ore >= bp.geodeBotOre && curr.obs >= bp.geodeBotObs)
           # don't build obs bot if you can build geode bot
@@ -62,15 +58,13 @@ class Main
             # don't need more ore than the max any bot could need per min
             (curr.oreBotCnt < [bp.geodeBotOre, bp.obsBotOre, bp.clayBotOre].max) &&
             (curr.ore >= bp.oreBotOre)
-          # don't want to hoard if we can build a a geode bot
+          # don't want to hoard if we can build a geode bot
           canBuildNothing = !canBuildGeodeBot &&
             # don't idle if we have already hoarded more clay and ore than we need
             (curr.ore < 2 * [bp.geodeBotOre, bp.obsBotOre, bp.clayBotOre].max) &&
             (curr.clay < 3 * bp.obsBotClay)
-
           # push build nothing state only
           queue << n if (canBuildNothing)
-
           # push build geode bot state
           queue << BotState.new(
             n.minutes,
@@ -129,12 +123,10 @@ class Main
   end
 
   def calculate_part1
-    blueprints = input.map { |line| Blueprint.new(*line.scan(/(\d+)/).flatten.map(&:to_i)) }
     blueprints.map { |bp| getBestGeodes(bp, 24) * bp.id }.sum
   end
 
   def calculate_part2
-    blueprints = input.map { |line| Blueprint.new(*line.scan(/(\d+)/).flatten.map(&:to_i)) }
     blueprints[0..2].map { |bp| getBestGeodes(bp, 32) }.inject(1, :*)
   end
 end
