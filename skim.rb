@@ -162,6 +162,13 @@ class Skim
     n
   end
 
+  def rectangularize(default = nil)
+    max_w = data.map(&:size).max
+    n = Skim.new(max_w, height, default)
+    n.paste(0, 0, self)
+    n
+  end
+
   def insert_rows!(row_count, default = nil, pos: nil, width: self.width)
     new_rows = row_count.times.map { [default] * width }
     if pos
@@ -203,6 +210,10 @@ class Skim
 
   def all?
     data.all? { |row| row.all? { |v| yield v } }
+  end
+
+  def count(v, &block)
+    data.sum { |row| row.count(v, &block) }
   end
 
   def find_coords(value)
@@ -341,5 +352,4 @@ class Skim
     context = SearchContext.new(self, diag, block, nil, est_dist_proc)
     Search::a_star(SearchNode.new(context, x0, y0), SearchNode.new(context, x1, y1))
   end
-end# frozen_string_literal: true
-
+end
