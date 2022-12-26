@@ -1,77 +1,84 @@
-require_relative 'skim'
-require_relative 'search'
+require 'set'
 
-$mapp = Skim.read
-$bw, $bh = $mapp.width - 2, $mapp.height - 2
+valley = File.foreach('./input/day24-input.txt').to_a.map(&:chomp)
+empty_valley = valley.map { |line| line.gsub(/[><v^]/, '.') }
+iwidth = valley[0].size - 2
+iheight = valley.size - 2
 
-$blizzards = []
-$mapp.each do |c, x, y|
-  dx, dy = case c
-           when '^' then [0, -1]
-           when 'v' then [0, 1]
-           when '<' then [-1, 0]
-           when '>' then [1, 0]
-           else next
-           end
-  $blizzards << [x - 1, y - 1, dx, dy, c]
-  $mapp[x, y] = '.'
-end
+# Generate all possible phases of the valley.
+phase_count = iwidth.lcm(iheight)
+$phases = phase_count.times.map { empty_valley.map(&:dup) }
+#puts "phase_count: #{phase_count}"
+valley.size.times do |y|
+  valley[y].size.times do |x|
+    case valley[y][x]
+    when 'v' then path = ->(time) { [x, 1 + (y - 1 + time) % iheight] }
+    when '^' then path = ->(time) { [x, 1 + (y - 1 - time) % iheight] }
+    when '>' then path = ->(time) { [1 + (x - 1 + time) % iwidth, y] }
+    when '<' then path = ->(time) { [1 + (x - 1 - time) % iwidth, y] }
+    else next
+    end
 
-def map_at_t(t)
-  $cache ||= {}
-  return $cache[t] if $cache.key?(t)
-
-  mapp = $mapp.dup
-  $blizzards.each do |x, y, dx, dy, c|
-    new_x = 1 + (x + dx * t) % $bw
-    new_y = 1 + (y + dy * t) % $bh
-    mapp[new_x, new_y] = c
-  end
-  $cache[t] = mapp
-end
-
-class SearchNode < Search::Node
-  attr_accessor :t, :x, :y
-
-  def initialize(t, x, y)
-    self.t = t
-    self.x = x
-    self.y = y
-  end
-
-  def enum_edges
-    next_map = map_at_t(t + 1)
-    yield 1, SearchNode.new(t + 1, x, y) if next_map[x, y] == '.'
-    next_map.nabes(x, y, diag: false) do |c, a, b|
-      yield 1, SearchNode.new(t + 1, a, b) if c == '.'
+    $phases.each_with_index do |phase, time|
+      x2, y2 = path.call(time)
+      phase[y2][x2] = 'B'
     end
   end
+end
 
-  def est_cost(other)
-    (other.x - x).abs + (other.y - y).abs
-  end
-
-  def hash
-    [t, x, y].hash
-  end
-
-  def fuzzy_equal?(other)
-    x == other.x && y == other.y
+def possible_next_coords(time, coords)
+  phase = $phases.fetch((time + 1) % $phases.size)
+  x, y = coords
+  candidates = [[x, y], [x + 1, y], [x - 1, y], [x, y + 1], [x, y - 1]]
+  candidates.select do |coords|
+    (phase[coords[1]] || '')[coords[0]] == '.'
   end
 end
 
-start_x, start_y = $mapp.data.first.index('.'), 0
-end_x, end_y = $mapp.data.last.index('.'), $mapp.data.size - 1
-t = Search::a_star(SearchNode.new(0, start_x, start_y), SearchNode.new(nil, end_x, end_y)).first
-puts t
+def manhattan_distance(coords1, coords2)
+  (coords1[0] - coords2[0]).abs + (coords1[1] - coords2[1]).abs
+end
 
-t1 = Search::a_star(SearchNode.new(t, end_x, end_y), SearchNode.new(nil, start_x, start_y)).first
-puts t1
+# Do pathfinding with a priority queue.
+# Each entry is an array with:
+#   [0] = best_case_score: best possible total time to reach destination
+#   [1] = time: the current time, modulo phase_count
+#   [2] = coords: the current coordinates where we are
+#   [3] = path: the path we used to get here, for debugging
+def find_path(time, start, goal)
+  queue = [ [nil, time, start, [start] ] ]
+  visited = Set.new
+  iteration_count = 0
+  while true
+    bcs, time, coords, path = queue.shift
 
-t2 = Search::a_star(SearchNode.new(t + t1, start_x, start_y), SearchNode.new(nil, end_x, end_y)).first
-puts t2
+    visitation_state = [time, coords]
+    next if visited.include?(visitation_state)
+    visited << visitation_state
 
-puts t + t1 + t2
+    if (iteration_count % 10000) == 0 && iteration_count > 0
+      #puts "Analyzing time=#{time} coords=#{coords}, queue=#{queue.size}"
+    end
 
-# frozen_string_literal: true
+    return time if coords == goal  # success
 
+    next_time = time + 1
+    possible_next_coords(time, coords).each do |next_coords|
+      best_case_score = next_time + manhattan_distance(next_coords, goal)
+      entry = [best_case_score, next_time, next_coords, path + [next_coords]]
+      index = queue.each_index.find { |i| queue[i][0] > entry[0] } || queue.size
+      queue.insert(index, entry)
+    end
+
+    iteration_count += 1
+  end
+end
+
+valley_entrance = [valley.first.index('.'), 0]
+valley_exit = [valley.last.index('.'), valley.size - 1]
+
+time = find_path(0, valley_entrance, valley_exit)
+puts "Part 1: #{time}"
+time = find_path(time, valley_exit, valley_entrance)
+time = find_path(time, valley_entrance, valley_exit)
+puts "Part 2: #{time}"
