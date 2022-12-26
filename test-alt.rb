@@ -35,8 +35,8 @@ def move1(x, y, face, sanity=false)
 
     dx = [1, 0, -1, 0].fetch(new_face)
     dy = [0, 1, 0, -1].fetch(new_face)
-    new_y = (new_y + dy) % $map.size
-    new_x = (new_x + dx) % $map[new_y].size
+    new_y += dy
+    new_x += dx
 
     if $map[new_y][new_x] == ' '
       if new_x == 151 && (1..50).include?(new_y)       # B to D
@@ -127,7 +127,6 @@ x = map[y].index('.')
 face = 0   # 0 = right, 1 = down, etc.
 
 instructions.each do |inst|
-  #puts "Executing #{inst}"
   case inst
   when :L
     face = (face - 1) % 4
