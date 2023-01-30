@@ -42,6 +42,9 @@ class Main
   end
 end
 
+puts "Day25 Part1 Example: #{Main.new(File.foreach('./input/day25-example.txt')).calculate_part1}"
+puts "Day25 Part1 Input: #{Main.new(File.foreach('./input/day25-input.txt')).calculate_part1}"
+
 class Test_Day_25 < Minitest::Test
   def test_calculate_part1
     test_case = "2=-1=0"
@@ -53,6 +56,3 @@ class Test_Day_25 < Minitest::Test
     assert_equal(test_case, Main.new(File.foreach('./input/day25-input.txt')).calculate_part1)
   end
 end
-
-puts "Day25 Part1 Example: #{Main.new(File.foreach('./input/day25-example.txt')).calculate_part1}"
-puts "Day25 Part1 Input: #{Main.new(File.foreach('./input/day25-input.txt')).calculate_part1}"
